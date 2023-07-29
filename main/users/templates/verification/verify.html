@@ -1,0 +1,12 @@
+{% extends "latter/base.html" %}
+{% block content %}
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <label for="verification_code">Код подтверждения:</label>
+        <input type="text" id="verification_code" name="verification_code">
+        <br>
+        <br>
+        <button type="submit">Подтвердить код</button>
+    </form>
+{% endblock %}

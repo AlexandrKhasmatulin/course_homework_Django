@@ -1,0 +1,9 @@
+{% extends "latter/base.html" %}
+{% block content %}
+
+    <button class="badge bg-secondary-subtle border border-secondary-subtle text-secondary-emphasis rounded-pill">
+        <a href="{% url 'latter:list' %}"
+           class="btn btn-info">Рассылка успешна завершена</a>
+    </button>
+
+{% endblock %}

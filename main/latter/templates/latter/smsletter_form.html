@@ -1,0 +1,10 @@
+{% extends "latter/base.html" %}
+{% block content %}
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button class="badge bg-secondary-subtle border border-secondary-subtle text-secondary-emphasis rounded-pill">
+            <a href="{% url 'latter:list' %}" class="text-black">Сохранить</a>
+        </button>
+    </form>
+{% endblock %}

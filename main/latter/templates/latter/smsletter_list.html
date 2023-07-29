@@ -1,0 +1,44 @@
+{% extends 'latter/base.html' %}
+
+}
+{% block content %}
+    <div class="col-11 mb-5">
+        <a class="btn btn-outline-primary" href="{% url "latter:create" %}">Добавить рассылку</a>
+    <a class="btn btn-outline-primary" href="{% url "latter:send_email" %}">Разослать</a>
+    </div>
+    {% for object in sms_lat %}
+        <div class="col-md-4">
+        <div class="card mb-2 box-shadow">
+            <div class="card-body">
+                {% load mediapath %}
+                <center/>
+                    <div class="d-flex flex-column h-100 p-5 pb-3 text-shadow-1">
+                        <h3 class="card-text">Тема письма :</h3>
+                        <a>{{ object.title|title|truncatechars:100 }}</a>
+                        <ul class="d-flex list-unstyled mt-auto">
+                            <li class="me-auto">
+                                <img src="{% mediapath object.image %}" width="100%" height="170" alt=""
+                                     class="rounded-circle border border-white">
+                                <a>Рассылка клиенту : {{ object.client|title|truncatechars:100 }}</a>
+                            </li>
+                    </div>
+                    <div class="button_two">
+                        <button class="badge bg-secondary-subtle border border-secondary-subtle text-secondary-emphasis rounded-pill">
+                            <a href="{% url 'latter:catalog' object.pk %}" class="text-black">Информация</a>
+                        </button>
+
+                        <button class="badge bg-secondary-subtle border border-secondary-subtle text-secondary-emphasis rounded-pill">
+                            <a href="{% url 'latter:update' object.pk %}" class="text-black">Изменить</a>
+                        </button>
+
+                        <button class="badge bg-secondary-subtle border border-secondary-subtle text-secondary-emphasis rounded-pill">
+                            <a href="{% url 'latter:delete' object.pk %}"
+                               class="btn-outline-danger">Удалить</a>
+                        </button>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+{% endblock %}

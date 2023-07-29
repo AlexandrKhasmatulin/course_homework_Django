@@ -1,0 +1,24 @@
+{% extends 'latter/base.html' %}
+{% load mediapath %}
+{% block content %}
+
+    <div class="card">
+        <img src="{% mediapath object.preview %}" width="100%" height="170" alt="Иллюстрация" style="float: left;">
+
+        <div class="card-body">
+            <h4 class="card-title">{{ object.title|title|truncatechars:100 }}</h4>
+        </div>
+
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">Дата создания : {{ blog.create_data|title }}</li>
+            <li class="list-group-item">Просмотров : {{ object.views_count }}</li>
+            <li class="list-group-item">Cсылка : {{ object.slug }}</li>
+        </ul>
+    </div>
+    <table class="table" style="text-align: right;">
+        <tr>
+            <td>Факты:</td>
+            <td>{{ blog.body|title }}</td>
+        </tr>
+    </table>
+{% endblock %}

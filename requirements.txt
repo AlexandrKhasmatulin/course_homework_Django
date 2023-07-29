@@ -1,0 +1,7 @@
+Django
+psycopg2-binary
+ipython
+pillow
+pytils
+django-crontab
+celery
