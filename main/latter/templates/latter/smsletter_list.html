@@ -29,10 +29,9 @@
                             <a href="{% url 'latter:catalog' object.pk %}" class="text-black">Информация</a>
                         </button>
                         {% if perms.SmsLetter.delete_product %}
-                            <button class="badge bg-secondary-subtle border border-secondary-subtle text-secondary-emphasis rounded-pill">
-                                <a href="{% url 'latter:delete' object.pk %}"
-                                   class="btn-outline-danger">Удалить</a>
-                            </button>
+                             <button class="badge bg-secondary-subtle border border-secondary-subtle text-secondary-emphasis rounded-pill">
+                             <a href="{% url 'latter:update' object.pk %}" class='text-black'>Изменить</a>
+                        </button>
                         {% endif %}
                         {% if perms.SmsLetter.change_product %}
                             <button class="badge bg-secondary-subtle border border-secondary-subtle text-secondary-emphasis rounded-pill">
