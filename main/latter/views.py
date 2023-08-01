@@ -1,4 +1,5 @@
 from django.conf import settings
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.core.mail import send_mail
 from django.forms import inlineformset_factory
 from django.shortcuts import render
@@ -6,21 +7,21 @@ from django.template.defaultfilters import slugify
 from django.urls import reverse_lazy, reverse
 from django.views.generic import CreateView, ListView, UpdateView, DetailView, DeleteView
 
+from main.Blog.models import Blog
 from main.latter.forms import SmsLetterForm, SubjectForm
 from main.latter.models import SmsLetter, Mailing, Client
 
 
-class SmsLetterCreateView(CreateView):
+class SmsLetterCreateView(LoginRequiredMixin, CreateView, PermissionRequiredMixin):
     model = SmsLetter
     form_class = SmsLetterForm
     success_url = reverse_lazy("latter:create")
-    permission_required = "main.latter.add_latter"
 
     def form_valid(self, form):
         if form.is_valid():
-            new_mat = form.save(commit=False) # создаем объект, но не сохраняем его в базе данных
-            new_mat.slug = slugify(new_mat.title) # устанавливаем значение атрибута "slug"
-            new_mat.save() # сохраняем объект в базе данных
+            new_mat = form.save(commit=False)
+            new_mat.slug = slugify(new_mat.title)
+            new_mat.save()
 
         return super().form_valid(form)
 
@@ -35,8 +36,9 @@ class SmsLetterListView(ListView):
         return queryset
 
 
-class SmsLetterUpdateView(UpdateView):
+class SmsLetterUpdateView(LoginRequiredMixin, UpdateView, PermissionRequiredMixin):
     model = SmsLetter
+    fields = ("title", "client","send_time","frequency","status")
     permission_required = "main.Product.change_product"
     #success_url = reverse_lazy('Blog:list')
 
@@ -58,7 +60,7 @@ class SmsLetterUpdateView(UpdateView):
 
     def get_context_data(self, **kwargs):
         context_data = super().get_context_data(**kwargs)
-        SubjectFormset = inlineformset_factory(SmsLetter, Subject, form=SubjectForm, extra=1)
+        SubjectFormset = inlineformset_factory(SmsLetter,Client, form=SubjectForm, extra=1)
         if self.request.method == "POST":  # пост и гет запрос
             context_data["formset"] = SubjectFormset(self.request.POST, instance=self.object)
         else:
@@ -86,13 +88,36 @@ class SmsLetterDetailView(DetailView):
         return self.object
 
 
-class SmsLetterDeleteView(DeleteView):
+class SmsLetterDeleteView(LoginRequiredMixin, DeleteView, PermissionRequiredMixin):
     model = SmsLetter
     success_url = reverse_lazy("latter:list")
+    permission_required = "latter.delete_product"
 
     def test_func(self):
         return self.request.user.is_superuser
 
+
+def index(request):
+    # Получаем количество рассылок всего
+    total_newsletters = SmsLetter.objects.count()
+
+    # Получаем количество активных рассылок
+    active_newsletters = SmsLetter.objects.filter(is_active=True).count()
+
+    # Получаем количество уникальных клиентов для рассылок
+    unique_clients = Client.objects.filter(client__isnull=False).distinct().count()
+
+    # Получаем 3 случайные статьи из блога
+    blog_posts = Blog.objects.order_by('?')[:3]
+
+    context = {
+        'total_newsletters': total_newsletters,
+        'active_newsletters': active_newsletters,
+        "unique_clients": unique_clients,
+        'blog_posts': blog_posts,
+    }
+
+    return render(request, 'latter/information.html', context)
 
 def smslatters(request):
     SmsLetter_list = SmsLetter.objects.all()
@@ -115,16 +140,8 @@ def send_email(request):
     mailing = Mailing.objects.get(title="Важно")  # Get the specific Mailing object with the desired title
     title = mailing.title
     content = mailing.content
-
-    # Get the list of clients
     clients = Client.objects.all()
-
-    # Create a list of email addresses from the clients list
     recipient_list = [client.email for client in clients]
-
-    # Send the email to all addresses in recipient_list
     send_mail(title, content, settings.EMAIL_HOST_USER, recipient_list)
     return render(request, "latter/email_complete.html")
-
-
 

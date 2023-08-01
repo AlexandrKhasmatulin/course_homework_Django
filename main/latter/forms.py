@@ -14,8 +14,7 @@ class SmsLetterForm(StyleFormMixin, forms.ModelForm):
 
     class Meta:
         model = SmsLetter
-        fields = ('client', 'title', "message")
-
+        fields = ("title", "client", "send_time", "frequency", "status")
     # def clean_name(self):
     #     name = self.cleaned_data["name"]
     #     forbidden_words = ['казино', 'криптовалюта', 'крипта', 'биржа', 'дешево', 'бесплатно', 'обман', 'полиция', 'радар']

@@ -15,6 +15,9 @@
                         {% csrf_token %}
                         {{ form.as_p }}
                         <button type="submit" class="btn btn-primary">Сохранить</button>
+                        <button class="btn btn-outline-info">
+                            <a href="{% url "users:send_verification_email" %}" class="text-black">Подтвердить почту</a>
+                        </button>
                     </div>
                     <div class="card-footer"></div>
                 </div>

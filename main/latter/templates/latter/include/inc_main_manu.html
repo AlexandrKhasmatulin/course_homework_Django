@@ -13,9 +13,7 @@
                 Лист рассылок
             </a>
         </li>
-        {% if user.is_authenticated %}
-            <li>
-            <li>
+    <li>
                 <a href="{% url 'Blog:list' %}" class="nav-link text-white">
                     <svg class="bi d-block mx-auto mb-1" width="24" height="24">
                         <use xlink:href="#table"></use>
@@ -23,6 +21,8 @@
                     Блог
                 </a>
             </li>
+        {% if user.is_authenticated %}
+            <li>
             <a href="{% url 'users:logout' %}" class="nav-link text-white">
                 <svg class="bi d-block mx-auto mb-1" width="24" height="24">
                     <use xlink:href="#grid"></use>

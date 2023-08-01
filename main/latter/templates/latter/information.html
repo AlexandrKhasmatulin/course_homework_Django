@@ -1,0 +1,33 @@
+{% extends 'latter/base.html' %}
+
+
+{% block content %}
+    <div class="col-md-4">
+    <div class="card mb-2 box-shadow">
+    <div class="card-body">
+    {% load mediapath %}
+    <center/>
+    <div class="d-flex flex-column h-100 p-5 pb-3 text-shadow-1">
+    <ul class="d-flex list-unstyled mt-auto">
+    <li class="me-auto">
+
+    <a>Количество рассылок всего: {{ total_newsletters }}</a>
+    <p>Количество активных рассылок: {{ active_newsletters }}</p>
+    <p>Количество уникальных клиентов для рассылок: {{ unique_clients }}</p>
+
+    <h2>3 случайные статьи из блога:</h2>
+    {% for post in blog_posts %}
+        <h3>{{ post.title }}</h3>
+        <p>{{ post.content }}</p>
+    {% endfor %}
+{% endblock %}
+</li>
+</div>
+</div>
+
+</div>
+</div>
+
+
+
+

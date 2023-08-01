@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_crontab',
 
     "main.latter",
     "main.Blog",
@@ -44,7 +45,7 @@ INSTALLED_APPS = [
 ]
 
 CRONJOBS = [
-    ('*/5 * * * *', 'latterc.cron.my_scheduled_job')
+    ('0 10 * * *', 'latter.views.send_email')
 ]
 
 REDIS_HOST = "0.0.0.0"
@@ -175,3 +176,14 @@ CACHES = {
         "LOCATION": "redis://127.0.0.1:6379",
     }
 }
+
+#кеширование
+CACHE_ENABLED = False
+if CACHE_ENABLED:
+    CACHES = {
+        "default": {
+            "BACKEND": "django.core.cache.backends.redis.RedisCache",
+            "LOCATION": os.getenv('CACHES_LOCATION'),
+            "TIMEOUT": 300 # Ручная регулировка времени жизни кеша в секундах, по умолчанию 300
+        }
+    }

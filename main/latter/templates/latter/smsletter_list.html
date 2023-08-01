@@ -1,17 +1,18 @@
 {% extends 'latter/base.html' %}
 
-}
+
 {% block content %}
     <div class="col-11 mb-5">
         <a class="btn btn-outline-primary" href="{% url "latter:create" %}">Добавить рассылку</a>
-    <a class="btn btn-outline-primary" href="{% url "latter:send_email" %}">Разослать</a>
+        <a class="btn btn-outline-primary" href="{% url "latter:index" %}">Информация по рассылкам</a>
     </div>
+
     {% for object in sms_lat %}
         <div class="col-md-4">
-        <div class="card mb-2 box-shadow">
-            <div class="card-body">
-                {% load mediapath %}
-                <center/>
+            <div class="card mb-2 box-shadow">
+                <div class="card-body">
+                    {% load mediapath %}
+                    <center/>
                     <div class="d-flex flex-column h-100 p-5 pb-3 text-shadow-1">
                         <h3 class="card-text">Тема письма :</h3>
                         <a>{{ object.title|title|truncatechars:100 }}</a>
@@ -22,22 +23,32 @@
                                 <a>Рассылка клиенту : {{ object.client|title|truncatechars:100 }}</a>
                             </li>
                     </div>
+
                     <div class="button_two">
                         <button class="badge bg-secondary-subtle border border-secondary-subtle text-secondary-emphasis rounded-pill">
                             <a href="{% url 'latter:catalog' object.pk %}" class="text-black">Информация</a>
                         </button>
-
-                        <button class="badge bg-secondary-subtle border border-secondary-subtle text-secondary-emphasis rounded-pill">
-                            <a href="{% url 'latter:update' object.pk %}" class="text-black">Изменить</a>
-                        </button>
-
-                        <button class="badge bg-secondary-subtle border border-secondary-subtle text-secondary-emphasis rounded-pill">
-                            <a href="{% url 'latter:delete' object.pk %}"
-                               class="btn-outline-danger">Удалить</a>
-                        </button>
-
+                        {% if perms.SmsLetter.delete_product %}
+                            <button class="badge bg-secondary-subtle border border-secondary-subtle text-secondary-emphasis rounded-pill">
+                                <a href="{% url 'latter:delete' object.pk %}"
+                                   class="btn-outline-danger">Удалить</a>
+                            </button>
+                        {% endif %}
+                        {% if perms.SmsLetter.change_product %}
+                            <button class="badge bg-secondary-subtle border border-secondary-subtle text-secondary-emphasis rounded-pill">
+                                <a href="{% url 'latter:delete' object.pk %}"
+                                   class="btn-outline-danger">Удалить</a>
+                            </button>
+                        {% endif %}
+                        {% if perms.SmsLetter.change_product %}
+                            <button class="badge bg-secondary-subtle border border-secondary-subtle text-secondary-emphasis rounded-pill">
+                                <a href="{% url 'latter:send_email' %}"
+                                   class="btn-outline-danger">Разослать</a>
+                            </button>
+                        {% endif %}
                     </div>
                 </div>
+
             </div>
         </div>
     {% endfor %}

@@ -14,14 +14,14 @@ class Command(BaseCommand):
         # meet = Blog.objects.create(title='мясо')
         # fish = Blog.objects.create(title='рыба')
 
-        Blog.objects.create(title='банан', body='', preview="/Банан.png")
-        Blog.objects.create(title='помидор', body='', preview='/Помидор.png')
-        Blog.objects.create(title='орех', body='',  preview='/Орех.png')
-        Blog.objects.create(title='баранина', body='', preview='/Баранина.png')
-        Blog.objects.create(title='курица', body='', preview='/Курица.png')
-        Blog.objects.create(title='килька', body='', preview='/Рыба.png')
-        Blog.objects.create(title='черешня', body='', preview='/Черешня.png')
-        Blog.objects.create(title='клубника', body='', preview='/Клубника.png')
+        Blog.objects.create(title='банан', body='Желтый', preview="/Банан.png")
+        Blog.objects.create(title='помидор', body='Красный', preview='/Помидор.png')
+        Blog.objects.create(title='орех', body='Коричневый',  preview='/Орех.png')
+        Blog.objects.create(title='баранина', body='Кровавая', preview='/Баранина.png')
+        Blog.objects.create(title='курица', body='Пернатая', preview='/Курица.png')
+        Blog.objects.create(title='килька', body='Скользкая', preview='/Рыба.png')
+        Blog.objects.create(title='черешня', body='Красненькая', preview='/Черешня.png')
+        Blog.objects.create(title='клубника', body='Розовая', preview='/Клубника.png')
 
 
 

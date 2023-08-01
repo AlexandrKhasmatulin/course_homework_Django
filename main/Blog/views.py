@@ -1,3 +1,5 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import Http404
 from django.urls import reverse_lazy, reverse
 from django.views.generic import CreateView, ListView, DetailView, UpdateView, DeleteView
 from pytils.translit import slugify
@@ -5,7 +7,7 @@ from pytils.translit import slugify
 from main.Blog.models import Blog
 
 
-class BlogCreateView(CreateView):
+class BlogCreateView(LoginRequiredMixin, CreateView):
     model = Blog
     fields = ('title', "body")
     success_url = reverse_lazy('Blog:list')
@@ -18,7 +20,7 @@ class BlogCreateView(CreateView):
         return super().form_valid(form)
 
 
-class BlogUpdateView(UpdateView):
+class BlogUpdateView(LoginRequiredMixin, UpdateView):
     model = Blog
     fields = ('title', "body")
     #success_url = reverse_lazy('Blog:list')
@@ -53,6 +55,14 @@ class BlogDetailView(DetailView):
         return self.object
 
 
-class BlogDeleteView(DeleteView):
+class BlogDeleteView(LoginRequiredMixin, DeleteView):
     model = Blog
     success_url = reverse_lazy("Blog:list")
+
+    def dispatch(self, request, *args, **kwargs):
+        """проверка что редактирование доступно владельцу или модератору или root"""
+        self.object = self.get_object()
+        if self.object.user != self.request.user and not self.request.user.is_staff and not self.request.user.is_superuser:
+            raise Http404("Вы не являетесь владельцем этого продукта.")
+
+        return super().dispatch(request, *args, **kwargs)
